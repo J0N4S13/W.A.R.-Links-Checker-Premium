@@ -1,4 +1,4 @@
-// ==UserScript==
+﻿// ==UserScript==
 // @name			W.A.R. Links Checker Premium
 // @description		        detects live, dead and premium links.
 // @details			this script automatically checks links from hundreds of filehosts. For Firefox, Chrome, Opera, Safari. 
@@ -32,18 +32,20 @@
 // @downloadURL     http://usa.x10host.com/mybb/script/295074.user.js
 // @updateURL       http://usa.x10host.com/mybb/script/295074.user.js
 // @noframes
-// @version			1.4.3.0
+// @version			1.4.3.6
 // ==/UserScript==
 
-var War_version = "1.4.3.0 December 09, 2017";
+var War_version = "1.4.3.6 December 22, 2017";
 
 //separate alternative domains with "|" char (first name is considered being main)
 var allHostNames = [
  "1fichier.com|dl4free.com",
 	"k-upload.com|k-upload.fr",
+	"vshare.io",
+	"anonfile.com",
 	"drop.me",
 	"bittfox.com",
-	"cloudyfiles.com",
+	"cloudyfiles.com|cloudyfiles.org",
 	"backin.net",
 	"bitshare.com",
 	"filefox.cc",
@@ -78,6 +80,7 @@ var allHostNames = [
 	"drive.google.com",
 	"suprafiles.net",
 	"suprafiles.co",
+	"suprafiles.org",
 	"fileflares.com",
 	"erafile.com",
 	"mystore.to",
@@ -385,6 +388,7 @@ var allHostNames = [
 	"openload.io",
 	"upnito.sk",
 	"oload.net",
+    "4downfiles.org",
          
 ];
 
@@ -3562,7 +3566,7 @@ function k2sRequest(K2SLink)
 						return;
 					}
 					
-					if (res.match('Premium only|only for premium members'))
+					if (res.match('Premium only|only for Premium members'))
 					{
 						DisplayTheCheckedLinks([K2SLink], 'prem_link');
 						return;
@@ -9728,7 +9732,7 @@ function start(filterId)
 		if (GM_getValue("Check_uloz_dot_to_links", false)) 
 		{
 			addFileHost(
-			"uloz\.to",
+			"uloz\.to\/\\w+",
 			'limitedDownloadButton|Stáhnout pomalu',
 			'grayButton deletedFile">|Stránka nenalezena|upload-button"|jako soukromý.',
 			'optional1--',
@@ -9771,7 +9775,7 @@ function start(filterId)
 			"subyshare\.com\/\\w+",
 			'id="method_free',
 			'file was removed|class="err">|1s">404',
-			'This server is in maintenance mode',
+			'This server is in maintenance mode|m human"',
       'optional2',
 			"//a[contains(@href,'subyshare.com')]",
 			true);
@@ -9896,7 +9900,7 @@ function start(filterId)
       'optional2',
 			"//a[contains(@href,'erafile.com')]");
 		}
-		if (GM_getValue("Check_suprafiles_dot_net_links", false)) 
+        if (GM_getValue("Check_suprafiles_dot_net_links", false))
 		{
 			addFileHost(
 			"suprafiles\.net\/\\w+",
@@ -9904,9 +9908,9 @@ function start(filterId)
 			'File Not Found|style="width:1000px; text-align: left;">',
 			'server is in maintenance mode',
       'optional2',
-			"//a[contains(@href,'suprafiles.net') or contains(@href,'suprafiles.org')]");
+			"//a[contains(@href,'suprafiles.net')]");
 		}
-		if (GM_getValue("Check_suprafiles_dot_co_links", false)) 
+		if (GM_getValue("Check_suprafiles_dot_co_links", false))
 		{
 			addFileHost(
 			"suprafiles\.co\/\\w+",
@@ -9915,6 +9919,27 @@ function start(filterId)
 			'server is in maintenance mode',
       'optional2',
 			"//a[contains(@href,'suprafiles.co')]");
+		}
+		if (GM_getValue("Check_suprafiles_dot_org_links", false))
+		{
+			addFileHost(
+			"suprafiles\.org\/\\w+",
+			'name="method_free"',
+			'File Not Found|style="width:1000px; text-align: left;">',
+			'server is in maintenance mode',
+      'optional2',
+			"//a[contains(@href,'suprafiles.org')]");
+		}
+
+        if (GM_getValue("Check_4downfiles_dot_org_links", false))
+		{
+			addFileHost(
+			"4downfiles\.org\/\\w+",
+			'Free Download',
+			'Reason for deletion',
+			'optional1--',
+      'optional2',
+			"//a[contains(@href,'4downfiles.org')]");
 		}
 		if (GM_getValue("Check_upfiles_dot_net_links", false)) 
 		{
@@ -10239,15 +10264,15 @@ function start(filterId)
       'optional2',
 			"//a[contains(@href,'uploadbank.com')]");
 		}
-		if (GM_getValue("Check_cloudyfiles_dot_org_links", false)) 
+		if (GM_getValue("Check_cloudyfiles_dot_com_links", false)) 
 		{
 			addFileHost(
-			"cloudyfiles\.com",
+			"cloudyfiles\\.(?:org|com)\/\\w+",
 			'name="method_free"',
 			'File Not Found',
 			'optional1--',
       'optional2',
-			"//a[contains(@href,'cloudyfiles.com')]");
+			"//a[contains(@href,'cloudyfiles.com') or contains(@href,'cloudyfiles.org')]");
 		}
 		if (GM_getValue("Check_bittfox_dot_com_links", false)) 
 		{
@@ -10279,6 +10304,26 @@ function start(filterId)
       'optional2--',
 			"//a[contains(@href,'k-upload.com') or contains(@href,'k-upload.fr/')]"
 			);
+		}
+		if (GM_getValue("Check_anonfile_dot_com_links", false)) 
+		{
+			addFileHost(
+			"anonfile\\.com",
+			'id="download-url" class="btn btn-primary btn-block" href=',
+			'<title>404 -',
+			'optional1--',
+      'optional2',
+			"//a[contains(@href,'anonfile.com')]");
+		}
+		if (GM_getValue("Check_vshare_dot_io_links", false)) 
+		{
+			addFileHost(
+			"vshare\\.io\/\\w+",
+			'id="download-url"|id="download-link"',
+			'<title>404 -',
+			'optional1--',
+      'optional2',
+			"//a[contains(@href,'vshare.io')]");
 		}
 	}
 //start here
@@ -10682,6 +10727,35 @@ function parseCustomRules(rulesStr)
 
 
 /* ********************UPDATES********************
+
+December 22, 2017
+Version 1.4.3.6
+added 4downfiles.org
+fixed suprafiles
+
+December 17, 2017
+Version 1.4.3.5
+added suprafiles.org
+fixed subyshare
+
+December 16, 2017
+Version 1.4.3.4
+added
+anonfile.com
+vshare.io
+
+December 16, 2017
+Version 1.4.3.3
+fixed cloudyfiles.com/org
+
+December 16, 2017
+Version 1.4.3.2
+fixed keep2share not detecting some premium links
+
+
+December 15, 2017
+Version 1.4.3.1
+fixed uloz.to
 
 December 09, 2017
 Version 1.4.3.0
