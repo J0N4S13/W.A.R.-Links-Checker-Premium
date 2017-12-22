@@ -32,10 +32,10 @@
 // @downloadURL     http://usa.x10host.com/mybb/script/295074.user.js
 // @updateURL       http://usa.x10host.com/mybb/script/295074.user.js
 // @noframes
-// @version			1.4.3.5
+// @version			1.4.3.6
 // ==/UserScript==
 
-var War_version = "1.4.3.5 December 17, 2017";
+var War_version = "1.4.3.6 December 22, 2017";
 
 //separate alternative domains with "|" char (first name is considered being main)
 var allHostNames = [
@@ -9902,7 +9902,7 @@ function start(filterId)
 		if (GM_getValue("Check_suprafiles_dot_net_links", false)) 
 		{
 			addFileHost(
-			"suprafiles\.net\/\\w+",
+			"suprafiles\\.(?:net|org)\/\\w+",
 			'name="method_free"',
 			'File Not Found|style="width:1000px; text-align: left;">',
 			'server is in maintenance mode',
@@ -10716,6 +10716,9 @@ function parseCustomRules(rulesStr)
 
 /* ********************UPDATES********************
 
+December 22, 2017
+Version 1.4.3.6
+fixed suprafiles.org
 
 December 17, 2017
 Version 1.4.3.5
